@@ -11,6 +11,7 @@ import {
   AlertCircle,
   CheckCircle2,
 } from "lucide-react";
+import Link from "next/link";
 
 export default function SignInPage() {
   const [formData, setFormData] = useState({
@@ -51,7 +52,7 @@ export default function SignInPage() {
       }
 
       setSuccess("Successfully signed in! Redirecting to dashboard...");
-      // Optional: window.location.href = "/dashboard";
+      Optional: window.location.href = "/";
     } catch (err) {
       setError("A network error occurred. Please try again.");
     } finally {
@@ -240,12 +241,13 @@ export default function SignInPage() {
         <div className="text-center pt-2">
           <p className="text-xs text-neutral-400 font-light">
             New to Hireloop?{" "}
-            <button
+            <Link
+              href="/auth/signup"
               type="button"
               className="text-indigo-400 font-normal hover:underline hover:text-indigo-300 transition-all pl-0.5"
             >
               Create an account
-            </button>
+            </Link>
           </p>
         </div>
       </div>

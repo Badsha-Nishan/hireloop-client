@@ -13,6 +13,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import Link from "next/link";
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -61,6 +62,7 @@ export default function SignUpPage() {
       setError("A network error occurred. Please try again.");
     } finally {
       setIsLoading(false);
+      Optional: window.location.href = "/auth/signin";
     }
   };
 
@@ -223,12 +225,13 @@ export default function SignUpPage() {
         <div className="text-center pt-2">
           <p className="text-xs text-neutral-400 font-light">
             Already have an account?{" "}
-            <button
+            <Link
+              href={"/auth/signin"}
               type="button"
               className="text-indigo-400 font-normal hover:underline hover:text-indigo-300 transition-all pl-0.5"
             >
               Sign In
-            </button>
+            </Link>
           </p>
         </div>
       </div>

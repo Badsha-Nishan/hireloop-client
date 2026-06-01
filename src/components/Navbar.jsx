@@ -61,20 +61,19 @@ export default function Navbar() {
 
             {/* Sign In */}
             <Link
-              href="/login"
+              href="/auth/signin"
               className="text-base font-medium text-violet-400 transition hover:text-violet-300"
             >
               Sign In
             </Link>
 
             {/* CTA Button */}
-            <Button
-              as={Link}
-              href="/register"
-              className="h-14 rounded-2xl bg-white px-8 text-base font-semibold text-black hover:bg-gray-100"
+            <Link
+              href="/auth/signup"
+              className="h-14 flex justify-center items-center rounded-2xl bg-white px-8 text-base font-semibold text-black hover:bg-gray-100"
             >
               Get Started
-            </Button>
+            </Link>
           </div>
 
           {/* Mobile Toggle */}
