@@ -1,43 +1,39 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { BriefcaseBusiness, Building2, Users, Star } from "lucide-react";
 
 const stats = [
-  {
-    icon: BriefcaseBusiness,
-    value: "50K",
-    label: "Active Jobs",
-  },
-  {
-    icon: Building2,
-    value: "12K",
-    label: "Companies",
-  },
-  {
-    icon: Users,
-    value: "2M",
-    label: "Job Seekers",
-  },
-  {
-    icon: Star,
-    value: "97%",
-    label: "Satisfaction Rate",
-  },
+  { icon: BriefcaseBusiness, value: "50K", label: "Active Jobs" },
+  { icon: Building2, value: "12K", label: "Companies" },
+  { icon: Users, value: "2M", label: "Job Seekers" },
+  { icon: Star, value: "97%", label: "Satisfaction Rate" },
 ];
 
 export default function StatsSection() {
+  const [stars, setStars] = useState([]);
+
+  // Generate random positions ONLY on the client after hydration is done
+  useEffect(() => {
+    const generatedStars = [...Array(80)].map(() => ({
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 60}%`,
+    }));
+    setStars(generatedStars);
+  }, []);
+
   return (
     <section className="relative overflow-hidden bg-black py-24">
       {/* Stars Background */}
       <div className="absolute inset-0">
-        {[...Array(80)].map((_, i) => (
+        {stars.map((star, i) => (
           <span
             key={i}
             className="absolute h-1 w-1 rounded-full bg-indigo-300 opacity-70"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 60}%`,
+              left: star.left,
+              top: star.top,
             }}
           />
         ))}
@@ -54,7 +50,6 @@ export default function StatsSection() {
             className="w-full object-contain opacity-90"
             priority
           />
-
           {/* Purple Glow */}
           <div className="absolute inset-0 bg-indigo-600/20 blur-3xl" />
         </div>
@@ -64,10 +59,9 @@ export default function StatsSection() {
         {/* Heading */}
         <div className="mb-16 text-center">
           <h2 className="mx-auto max-w-3xl text-3xl font-medium leading-tight text-white">
-            Assisting over{" "}
+            <span className="block">Assisting over </span>
             <span className="text-indigo-400">15,000 job seekers</span>
-            <br />
-            find their dream positions.
+            <span className="block">find their dream positions.</span>
           </h2>
         </div>
 
@@ -75,18 +69,15 @@ export default function StatsSection() {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {stats.map((item, index) => {
             const Icon = item.icon;
-
             return (
               <div
                 key={index}
                 className="group rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl transition-all duration-300 hover:border-indigo-500/40 hover:bg-white/[0.05]"
               >
                 <Icon size={22} className="mb-10 text-white/80" />
-
                 <h3 className="mb-2 text-5xl font-bold text-white">
                   {item.value}
                 </h3>
-
                 <p className="text-lg text-gray-300">{item.label}</p>
               </div>
             );
