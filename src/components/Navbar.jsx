@@ -3,9 +3,16 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@heroui/react";
+import { authClient, useSession } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { data: session, isPending, refetch } = useSession();
+
+  const user = session?.user;
+
+  const router = useRouter();
 
   const navLinks = [
     {
@@ -60,20 +67,48 @@ export default function Navbar() {
             <div className="h-8 w-px bg-white/20" />
 
             {/* Sign In */}
-            <Link
-              href="/auth/signin"
-              className="text-base font-medium text-violet-400 transition hover:text-violet-300"
-            >
-              Sign In
-            </Link>
+            {user ? (
+              <>
+                <p className="text-base font-medium text-violet-400 transition">
+                  {`Welcome ${user?.name}`}
+                </p>
 
-            {/* CTA Button */}
-            <Link
-              href="/auth/signup"
-              className="h-14 flex justify-center items-center rounded-2xl bg-white px-8 text-base font-semibold text-black hover:bg-gray-100"
-            >
-              Get Started
-            </Link>
+                {/* CTA Button */}
+                <Button
+                  onClick={async () => {
+                    await authClient.signOut({
+                      fetchOptions: {
+                        onSuccess: async () => {
+                          await refetch(); // 1. Forces Better-Auth cache to drop the user session
+                          router.push("/"); // 2. Redirects safely
+                          router.refresh(); // 3. Syncs Next.js Server Components
+                        },
+                      },
+                    });
+                  }}
+                  variant="danger"
+                >
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/auth/signin"
+                  className="text-base font-medium text-violet-400 transition hover:text-violet-300"
+                >
+                  Sign In
+                </Link>
+
+                {/* CTA Button */}
+                <Link
+                  href="/auth/signup"
+                  className="h-14 flex justify-center items-center rounded-2xl bg-white px-8 text-base font-semibold text-black hover:bg-gray-100"
+                >
+                  Get Started
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Toggle */}
