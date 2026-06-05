@@ -18,6 +18,7 @@ import {
 import { Briefcase, Globe } from "@gravity-ui/icons";
 // import { createJob } from "@/lib/actions/jobs";
 import { redirect } from "next/navigation";
+import { createJob } from "@/lib/actions/jobs";
 
 export default function PostJobForm() {
   // Mock configuration for recruiter's authenticated state
@@ -38,20 +39,26 @@ export default function PostJobForm() {
       //   isRemote,
     };
 
-    console.log("JOB DATA:", payload);
+    // console.log("JOB DATA:", payload);
 
+    const res = await createJob(payload);
+    if (res.insertedId) {
+      toast.success("Job Created Successfully!");
+      e.target.reset();
+    }
+    console.log(res);
     // setLoading(true);
 
-    try {
-      await new Promise((r) => setTimeout(r, 1000));
-      alert("Job posted successfully!");
-      e.target.reset();
-      setIsRemote(false);
-    } catch (err) {
-      alert("Error occurred");
-    } finally {
-      //   setLoading(false);
-    }
+    // try {
+    //   await new Promise((r) => setTimeout(r, 1000));
+    //   alert("Job posted successfully!");
+    //   e.target.reset();
+    //   setIsRemote(false);
+    // } catch (err) {
+    //   alert("Error occurred");
+    // } finally {
+    //   //   setLoading(false);
+    // }
   };
   return (
     <div className="min-h-screen bg-[#0d0d0e] text-white py-12 px-4 sm:px-6 lg:px-8">
