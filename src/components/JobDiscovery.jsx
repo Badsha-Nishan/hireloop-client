@@ -1,6 +1,9 @@
+"use client";
 import React from "react";
 import { Button, Card } from "@heroui/react";
 import { MapPin, Briefcase, CircleDollarSign, ArrowRight } from "lucide-react";
+// At the top of your file:
+import { CardBody } from "@heroui/react";
 
 export default function JobDiscovery() {
   // Unique data array for all 6 cards
@@ -78,7 +81,7 @@ export default function JobDiscovery() {
             key={index}
             className="bg-[#121212] border border-neutral-800/40 p-4 rounded-2xl hover:border-neutral-700 transition-colors"
           >
-            <Card.Content className="p-4 flex flex-col justify-between min-h-[260px] space-y-6">
+            <div className="p-4 flex flex-col justify-between min-h-[260px] space-y-6">
               {/* Unique Top Details */}
               <div className="space-y-3">
                 <h3 className="text-2xl font-medium text-neutral-200">
@@ -120,7 +123,7 @@ export default function JobDiscovery() {
                   Apply Now
                 </Button>
               </div>
-            </Card.Content>
+            </div>
           </Card>
         ))}
       </div>

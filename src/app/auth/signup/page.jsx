@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Description, Label, Radio, RadioGroup } from "@heroui/react";
 
 import {
   ArrowRight,
@@ -25,6 +26,7 @@ export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [role, setRole] = useState("seeker");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,6 +49,7 @@ export default function SignUpPage() {
         email: formData.email,
         password: formData.password,
         name: formData.name,
+        role,
       });
 
       if (authError) {
@@ -177,6 +180,34 @@ export default function SignUpPage() {
                 )}
               </button>
             </div>
+          </div>
+
+          {/* Role Select */}
+          <div className="flex flex-col gap-4">
+            <Label>Role</Label>
+            <RadioGroup
+              defaultValue="seeker"
+              name="role"
+              orientation="horizontal"
+              onChange={(value) => setRole(value)}
+            >
+              <Radio value="seeker">
+                <Radio.Control>
+                  <Radio.Indicator />
+                </Radio.Control>
+                <Radio.Content>
+                  <Label>Seeker</Label>
+                </Radio.Content>
+              </Radio>
+              <Radio value="recruiter">
+                <Radio.Control>
+                  <Radio.Indicator />
+                </Radio.Control>
+                <Radio.Content>
+                  <Label>Recruiter</Label>
+                </Radio.Content>
+              </Radio>
+            </RadioGroup>
           </div>
 
           {/* Terms Agreement Checkbox */}
