@@ -37,6 +37,9 @@ export default function PostJobForm() {
     const payload = {
       ...data,
       //   isRemote,
+      companyId: "company_123",
+      status: "active",
+      isPubliclyVisible: true,
     };
 
     // console.log("JOB DATA:", payload);
@@ -46,7 +49,7 @@ export default function PostJobForm() {
       toast.success("Job Created Successfully!");
       e.target.reset();
     }
-    console.log(res);
+    // console.log(res);
     // setLoading(true);
 
     // try {

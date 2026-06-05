@@ -1,9 +1,14 @@
-import React from "react";
+import { getCompanyJobs } from "@/lib/api/jobs";
+import RecruiterJobsTableClient from "./RecruiterJobsTableClient";
 
-const RecruiterJobs = () => {
+const RecruiterJobs = async () => {
+  const companyId = "company_123";
+
+  const jobs = await getCompanyJobs(companyId);
+
   return (
-    <div>
-      <h2>Recruiter/Company Manage all jobs.</h2>
+    <div className="p-6">
+      <RecruiterJobsTableClient jobs={jobs} />
     </div>
   );
 };
