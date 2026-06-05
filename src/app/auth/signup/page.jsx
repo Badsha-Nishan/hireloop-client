@@ -184,7 +184,7 @@ export default function SignUpPage() {
 
           {/* Role Select */}
           <div className="flex flex-col gap-4">
-            <Label>Role</Label>
+            <Label>Tell us about you.</Label>
             <RadioGroup
               defaultValue="seeker"
               name="role"
