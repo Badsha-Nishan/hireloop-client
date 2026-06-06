@@ -33,7 +33,7 @@ export default function CompanyProfile() {
 
     try {
       // Replace with your actual ImgBB API key configuration or system API route
-      const IMGBB_API_KEY = "YOUR_IMGBB_API_KEY";
+      const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMAGE_UPLOAD_API;
       const response = await fetch(
         `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,
         {
@@ -69,6 +69,7 @@ export default function CompanyProfile() {
       logo: logoUrl || (company ? company.logo : ""),
       status: company ? company.status : "Pending", // Retain or set status
     };
+    console.log(companyData);
 
     setCompany(companyData);
     setIsEditing(false);
@@ -362,7 +363,15 @@ export default function CompanyProfile() {
                   className="hidden"
                 />
                 <div className="bg-zinc-900 border border-zinc-800 rounded-md p-2 text-zinc-400 group-hover:text-zinc-200">
-                  <ArrowUpToLine size={16} />
+                  {logoUrl ? (
+                    <img
+                      src={logoUrl}
+                      alt="Logo view"
+                      className="w-16 h-16 object-cover"
+                    ></img>
+                  ) : (
+                    <ArrowUpToLine size={16} />
+                  )}
                 </div>
                 <div className="flex flex-col">
                   <span className="text-xs text-zinc-300 font-medium">
