@@ -11,9 +11,11 @@ import {
   ListBox,
   TextArea,
   Button,
+  toast,
 } from "@heroui/react";
 // Gravity UI Icons imports
-import { Pin, ArrowUpToLine, PencilSimple } from "@gravity-ui/icons";
+import { Pin, ArrowUpToLine, Pencil } from "@gravity-ui/icons";
+import { createCompany } from "@/lib/actions/companies";
 
 export default function CompanyProfile() {
   // State management for logic flow
@@ -22,40 +24,54 @@ export default function CompanyProfile() {
   const [isUploading, setIsUploading] = useState(false);
   const [logoUrl, setLogoUrl] = useState("");
 
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result.split(",")[1]);
+      reader.onerror = reject;
+    });
+
   // ImgBB Upload Handler
   const handleLogoUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     setIsUploading(true);
-    const formData = new FormData();
-    formData.append("image", file);
 
     try {
-      // Replace with your actual ImgBB API key configuration or system API route
-      const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMAGE_UPLOAD_API;
-      const response = await fetch(
-        `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,
+      const base64 = await toBase64(file);
+
+      const res = await fetch(
+        `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMAGE_UPLOAD_API}`,
         {
           method: "POST",
-          body: formData,
+          body: new URLSearchParams({
+            image: base64,
+          }),
         }
       );
-      const data = await response.json();
+
+      // IMPORTANT: check response first
+      const text = await res.text();
+      console.log("ImgBB raw response:", text);
+
+      const data = JSON.parse(text);
+
       if (data.success) {
         setLogoUrl(data.data.url);
       } else {
-        console.error("Upload failed", data);
+        console.error("Upload failed:", data);
       }
     } catch (error) {
-      console.error("Error uploading image:", error);
+      console.error("Upload error:", error);
     } finally {
       setIsUploading(false);
     }
   };
 
   // Form Submission Strategy
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
@@ -72,6 +88,15 @@ export default function CompanyProfile() {
     console.log(companyData);
 
     setCompany(companyData);
+
+    const payload = await createCompany(companyData);
+
+    console.log(payload);
+
+    if (payload.insertedId) {
+      toast.success("Company created successfully!");
+    }
+
     setIsEditing(false);
   };
 
@@ -154,7 +179,7 @@ export default function CompanyProfile() {
             }}
             className="border-zinc-800 text-zinc-300 hover:bg-zinc-900 rounded-lg px-4 h-9 text-xs flex items-center gap-2"
           >
-            <PencilSimple size={14} /> Edit Profile
+            <Pencil size={14} /> Edit Profile
           </Button>
         </div>
 

@@ -12,6 +12,7 @@ const RecruiterDashboardHomePage = () => {
   }
 
   const user = session?.user;
+  console.log(user);
 
   const liveMetricsData = [
     {
