@@ -15,8 +15,13 @@ import {
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function SignUpPage() {
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/";
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -61,11 +66,11 @@ export default function SignUpPage() {
         "Account created successfully! Check your inbox or redirecting..."
       );
       setFormData({ name: "", email: "", password: "" });
+      router.push(redirectTo);
     } catch (err) {
       setError("A network error occurred. Please try again.");
     } finally {
       setIsLoading(false);
-      Optional: window.location.href = "/auth/signin";
     }
   };
 
@@ -257,7 +262,7 @@ export default function SignUpPage() {
           <p className="text-xs text-neutral-400 font-light">
             Already have an account?{" "}
             <Link
-              href={"/auth/signin"}
+              href={`/auth/signin?redirect=${redirectTo}`}
               type="button"
               className="text-indigo-400 font-normal hover:underline hover:text-indigo-300 transition-all pl-0.5"
             >

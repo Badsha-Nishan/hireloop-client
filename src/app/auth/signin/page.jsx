@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { authClient } from "@/lib/auth-client"; // Adjust this import path to match your better-auth client setup
+import { authClient } from "@/lib/auth-client";
 import {
   ArrowRight,
   Lock,
@@ -12,8 +12,13 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function SignInPage() {
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/";
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -52,7 +57,7 @@ export default function SignInPage() {
       }
 
       setSuccess("Successfully signed in! Redirecting to dashboard...");
-      Optional: window.location.href = "/";
+      router.push(redirectTo);
     } catch (err) {
       setError("A network error occurred. Please try again.");
     } finally {
@@ -242,7 +247,7 @@ export default function SignInPage() {
           <p className="text-xs text-neutral-400 font-light">
             New to Hireloop?{" "}
             <Link
-              href="/auth/signup"
+              href={`/auth/signup?redirect=${redirectTo}`}
               type="button"
               className="text-indigo-400 font-normal hover:underline hover:text-indigo-300 transition-all pl-0.5"
             >
