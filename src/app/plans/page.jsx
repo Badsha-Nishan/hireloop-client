@@ -224,15 +224,21 @@ export default function PricingPage() {
 
             {/* CTA Button */}
             <div className="mt-8">
-              <button
-                className={`w-full py-3 px-4 rounded-xl font-medium text-sm transition-all duration-200 ${
-                  plan.popular
-                    ? "bg-blue-600 hover:bg-blue-500 text-white shadow-lg"
-                    : "bg-slate-800 hover:bg-slate-700 text-slate-200"
-                }`}
-              >
-                {plan.cta}
-              </button>
+              <form action="/api/checkout_sessions" method="POST">
+                <section>
+                  <button
+                    type="submit"
+                    role="link"
+                    className={`w-full py-3 px-4 rounded-xl font-medium text-sm transition-all duration-200 ${
+                      plan.popular
+                        ? "bg-blue-600 hover:bg-blue-500 text-white shadow-lg"
+                        : "bg-slate-800 hover:bg-slate-700 text-slate-200"
+                    }`}
+                  >
+                    Checkout
+                  </button>
+                </section>
+              </form>
             </div>
           </div>
         ))}
