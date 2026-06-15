@@ -7,6 +7,7 @@ const pricingData = {
   seekers: [
     {
       name: "Free",
+      id: "seeker_free",
       price: "$0",
       period: "/forever",
       description: "Essential tools to get your job search started.",
@@ -21,6 +22,7 @@ const pricingData = {
     },
     {
       name: "Pro",
+      id: "seeker_pro",
       price: "$19",
       period: "/month",
       description: "Perfect for active job seekers looking to level up.",
@@ -35,6 +37,7 @@ const pricingData = {
     },
     {
       name: "Premium",
+      id: "seeker_premium",
       price: "$39",
       period: "/month",
       description: "Maximum visibility and unlimited applications.",
@@ -51,6 +54,7 @@ const pricingData = {
   recruiters: [
     {
       name: "Free",
+      id: "recruiter_free",
       price: "$0",
       period: "/forever",
       description: "Great for a company's first year of hiring.",
@@ -64,6 +68,7 @@ const pricingData = {
     },
     {
       name: "Growth",
+      id: "recruiter_growth",
       price: "$49",
       period: "/month",
       description: "Scale your team with comprehensive tracking tools.",
@@ -78,6 +83,7 @@ const pricingData = {
     },
     {
       name: "Enterprise",
+      id: "recruiter_enterprise",
       price: "$149",
       period: "/month",
       description: "Built for high-volume hiring and collaborative teams.",
@@ -225,6 +231,7 @@ export default function PricingPage() {
             {/* CTA Button */}
             <div className="mt-8">
               <form action="/api/checkout_sessions" method="POST">
+                <input type="hidden" name="plan_id" value={plan.id} />
                 <section>
                   <button
                     type="submit"
