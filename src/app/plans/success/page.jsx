@@ -1,6 +1,7 @@
 import { stripe } from "@/lib/stripe";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { createSubscription } from "@/lib/actions/subscriptions";
 
 export default async function Success({ searchParams }) {
   const { session_id } = await searchParams;
@@ -15,12 +16,22 @@ export default async function Success({ searchParams }) {
 
   const status = session.status;
   const customerEmail = session.customer_details?.email;
+  const metadata = session.metadata;
+  // console.log("here is metadata", metadata);
+  // console.log("customer email", customerEmail);
 
   if (status === "open") {
     return redirect("/");
   }
 
   if (status === "complete") {
+    const subsInfo = {
+      email: customerEmail,
+      planId: metadata?.planId,
+    };
+
+    const result = await createSubscription(subsInfo);
+    console.log("here is the result", result);
     return (
       <div className="min-h-[80vh] flex items-center justify-center bg-slate-950 text-slate-100 px-4">
         {/* Decorative Background Glows */}
